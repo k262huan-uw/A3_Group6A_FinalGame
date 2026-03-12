@@ -1,0 +1,476 @@
+// ----------------------
+// INGREDIENT DATA
+// ----------------------
+const TEA_BASES = [
+  { id: "black", label: "Black Tea", c: [95, 60, 35] },
+  { id: "milk", label: "Milk Tea", c: [190, 150, 105] },
+  { id: "green", label: "Green Tea", c: [80, 155, 90] },
+];
+
+const SYRUPS = [
+  { id: "straw", label: "Strawberry", c: [225, 80, 105] },
+  { id: "melon", label: "Honeydew", c: [105, 210, 120] },
+  { id: "mango", label: "Mango", c: [245, 175, 60] },
+  { id: "taro", label: "Taro", c: [185, 105, 210] },
+];
+
+const TOPPINGS = [
+  { id: "boba", label: "Boba", c: [55, 35, 25] },
+  { id: "jelly", label: "Lychee Jelly", c: [205, 120, 215] },
+  { id: "pud", label: "Pudding", c: [245, 215, 120] },
+];
+
+const serveBtn = { x: 640, y: 400, w: 260, h: 86 };
+
+// ----------------------
+// MOCHI STYLE COLOURS
+// ----------------------
+const MOCHI = {
+  sky: [233, 246, 255],
+  hills: [255, 210, 225],
+  counterTop: [200, 245, 235],
+  counterFront: [170, 230, 220],
+  outline: [40, 50, 70],
+  inkDark: [30, 35, 45],
+  accent: [255, 205, 120],
+};
+
+// ----------------------
+// SCREEN DRAW
+// ----------------------
+function drawGame() {
+  background("lavender");
+
+  // HUD
+  drawMochiHUD();
+
+  if (phase === "PREVIEW") {
+    drawPreviewPhaseMochi();
+    if (millis() > orderPreviewUntil) phase = "MIX";
+  } else {
+    drawMixPhaseMochi();
+  }
+}
+
+function drawPreviewPhaseMochi() {
+  // Customer row + bubble (shows order clearly)
+  drawCustomerRow(false);
+
+  // Center hint
+  fill(255, 255, 255, 235);
+  noStroke();
+  rectMode(CENTER);
+  rect(width / 2, 545, 620, 200, 22);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  textAlign(CENTER, CENTER);
+  textSize(30);
+  text("MEMORIZE THE ORDER!", width / 2, 530);
+
+  const tLeft = max(0, orderPreviewUntil - millis());
+  fill("red");
+  textSize(20);
+  text(
+    "Order disappears in " + (tLeft / 1000).toFixed(1) + "s",
+    width / 2,
+    570,
+  );
+}
+
+function drawMixPhaseMochi() {
+  // Customer row (bubble still exists but now follows vision mode feel)
+  drawCustomerRow(false);
+
+  // Counter
+  drawCounter();
+
+  // Ingredient bins (bottom)
+  drawIngredientBins();
+
+  // Serve button
+  drawServeButtonMochi();
+
+  // Auto-serve when timer ends
+  const tLeft = max(0, mixEndsAt - millis());
+  if (tLeft <= 0) serveDrink();
+}
+
+function drawMochiHUD() {
+  const tLeft = max(0, mixEndsAt - millis());
+  const secs = (tLeft / 1000).toFixed(1);
+
+  noStroke();
+  fill(255, 255, 255, 235);
+  rectMode(CENTER);
+  rect(width / 2, 70, 740, 44, 22);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  textAlign(CENTER, CENTER);
+  textSize(9.8);
+  text(
+    "Round " +
+      round +
+      "  •  Score " +
+      score +
+      "  •  Time " +
+      secs +
+      "s" +
+      "  •  Vision " +
+      visionMode +
+      " (V) •  R = Restart",
+    width / 2,
+    70,
+  );
+}
+
+function drawCustomerRow(showTrueOrder) {
+  // row panel
+  noStroke();
+  fill(233, 246, 255);
+  rectMode(CORNER);
+  rect(30, 105, width - 60, 200, 22);
+
+  // customers
+  const xs = [190, 330, 470, 610];
+  for (let i = 0; i < 4; i++) {
+    const mood = i === 0 ? "active" : "waiting";
+    drawMochiMonster(xs[i], 240, 70, i, mood);
+  }
+
+  // order bubble
+  drawOrderBubble(70, 125, order, showTrueOrder);
+}
+
+function drawMochiMonster(x, y, size, idx, mood) {
+  const bodies = [
+    [600, 170, 185],
+    [185, 235, 170],
+    [170, 210, 255],
+    [240, 190, 255],
+  ];
+  const body = monsterColours[idx];
+
+  // shadow
+  noStroke();
+  fill(0, 0, 0, 25);
+  ellipse(x, y + size * 0.52, size * 0.95, size * 0.26);
+
+  // body
+  stroke(MOCHI.outline[0], MOCHI.outline[1], MOCHI.outline[2]);
+  strokeWeight(3);
+  fill(body[0], body[1], body[2]);
+  ellipse(x, y, size, size);
+
+  // tiny ears
+  noStroke();
+  fill(body[0] - 10, body[1] - 10, body[2] - 10);
+  triangle(
+    x - size * 0.3,
+    y - size * 0.42,
+    x - size * 0.08,
+    y - size * 0.62,
+    x + size * 0.02,
+    y - size * 0.38,
+  );
+  triangle(
+    x + size * 0.3,
+    y - size * 0.42,
+    x + size * 0.08,
+    y - size * 0.62,
+    x - size * 0.02,
+    y - size * 0.38,
+  );
+
+  // eyes
+  stroke(MOCHI.outline[0], MOCHI.outline[1], MOCHI.outline[2]);
+  strokeWeight(3);
+  fill(255);
+  ellipse(x - size * 0.18, y - size * 0.05, size * 0.22, size * 0.22);
+  ellipse(x + size * 0.18, y - size * 0.05, size * 0.22, size * 0.22);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  ellipse(x - size * 0.18, y - size * 0.04, size * 0.1, size * 0.1);
+  ellipse(x + size * 0.18, y - size * 0.04, size * 0.1, size * 0.1);
+
+  // mouth
+  noFill();
+  stroke(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  strokeWeight(3);
+  if (mood === "active")
+    arc(x, y + size * 0.12, size * 0.3, size * 0.18, 0, PI);
+  else arc(x, y + size * 0.14, size * 0.26, size * 0.14, PI, TWO_PI);
+
+  noStroke();
+}
+
+function drawOrderBubble(x, y, ord, showTrueOrder) {
+  noStroke();
+  fill(255, 255, 255, 235);
+  rectMode(CORNER);
+  rect(x, y, 360, 60, 30);
+
+  // bubble tail
+  triangle(x + 30, y + 60, x + 70, y + 60, x + 96, y + 120);
+
+  const slots = [
+    { label: "Base", item: ord.base, px: x + 18 },
+    { label: "Syrup", item: ord.syrup, px: x + 138 },
+    { label: "Top", item: ord.topping, px: x + 258 },
+  ];
+
+  for (let i = 0; i < slots.length; i++) {
+    let col = slots[i].item.c;
+
+    // When previewing, show true colours. During mixing, show what player sees.
+    if (showTrueOrder) col = getShownColor(col);
+
+    drawIngredientIcon(slots[i].px, y, col, slots[i].label);
+  }
+}
+
+function drawIngredientIcon(x, y, col, label) {
+  fill(col[0], col[1], col[2]);
+  ellipse(x + 26, y + 30, 30, 30);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  textAlign(LEFT, CENTER);
+  textSize(12);
+  text(label, x + 46, y + 30);
+}
+
+function drawCounter() {
+  // counter top
+  noStroke();
+  fill(MOCHI.counterTop[0], MOCHI.counterTop[1], MOCHI.counterTop[2]);
+  rectMode(CORNER);
+  rect(30, 320, width - 60, 160, 22);
+
+  // counter front
+  fill(MOCHI.counterFront[0], MOCHI.counterFront[1], MOCHI.counterFront[2]);
+  rect(30, 410, width - 60, 280, 22);
+
+  // cup in the middle
+  drawCupMochi(width / 2, 390);
+}
+
+function drawCupMochi(cx, cy) {
+  // straw
+  stroke(MOCHI.outline[0], MOCHI.outline[1], MOCHI.outline[2]);
+  strokeWeight(10);
+  strokeCap(SQUARE);
+  line(width / 2, cy - 120, width / 2, cy + 68);
+  noStroke();
+
+  stroke(MOCHI.outline[0], MOCHI.outline[1], MOCHI.outline[2]);
+  strokeWeight(4);
+  fill(255, 255, 255, 220);
+  rectMode(CENTER);
+  rect(cx, cy, 130, 170, 22);
+
+  const baseC = selection.base
+    ? getShownColor(selection.base.c)
+    : [230, 230, 230];
+  const syrupC = selection.syrup
+    ? getShownColor(selection.syrup.c)
+    : [240, 240, 240];
+  const topC = selection.topping
+    ? getShownColor(selection.topping.c)
+    : [220, 220, 220];
+
+  noStroke();
+  fill(baseC[0], baseC[1], baseC[2], 200);
+  rect(cx, cy + 48, 112, 60, 16);
+
+  fill(syrupC[0], syrupC[1], syrupC[2], 190);
+  rect(cx, cy - 5, 112, 47, 16);
+
+  fill(topC[0], topC[1], topC[2], 180);
+  rect(cx, cy - 48, 112, 40, 16);
+
+  // pearls
+  if (selection.topping && selection.topping.id === "boba") {
+    fill(30, 30, 30, 120);
+    for (let i = 0; i < 6; i++) {
+      ellipse(cx - 45 + i * 18, cy + 62 + (i % 2) * 6, 12, 12);
+    }
+  }
+}
+
+function drawIngredientBins() {
+  const y = 560;
+  drawBinColumn("TEA", TEA_BASES, 130, y, "base");
+  drawBinColumn("SYRUP", SYRUPS, 330, y, "syrup");
+  drawBinColumn("TOPPING", TOPPINGS, 530, y, "topping");
+}
+
+function drawBinColumn(title, list, x, y, slotKey) {
+  fill(255, 255, 255, 220);
+  rectMode(CORNER);
+  rect(x - 20, y - 50, 190, 230, 18);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  textAlign(CENTER, TOP);
+  textSize(14);
+  text(title, x + 75, y - 34);
+
+  for (let i = 0; i < list.length; i++) {
+    const card = { x: x, y: y + i * 45, w: 150, h: 44 };
+    const hover = isHover(card);
+    const chosen = selection[slotKey] && selection[slotKey].id === list[i].id;
+
+    list[i]._card = card;
+
+    // drink selection
+    rectMode(CORNER);
+    noStroke();
+    if (chosen) fill(180, 220, 255, 230);
+    else fill(255, 255, 255, hover ? 235 : 195);
+    rect(card.x - 20, card.y - 18, card.w + 40, card.h);
+
+    // colours
+    const shown = getShownColor(list[i].c);
+    fill(shown[0], shown[1], shown[2]);
+    ellipse(card.x, card.y + 5, 22, 22);
+
+    // text
+    fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+    textAlign(LEFT, CENTER);
+    textSize(12);
+    text(list[i].label, card.x + 20, card.y + 5);
+  }
+}
+
+function drawServeButtonMochi() {
+  const enabled = selection.base && selection.syrup && selection.topping;
+  const hover = isHover(serveBtn);
+
+  rectMode(CENTER);
+  noStroke();
+
+  if (!enabled) fill("lightgrey");
+  else if (hover) fill(250, 190, 85);
+  else fill(255, 205, 120);
+
+  rect(serveBtn.x, serveBtn.y, serveBtn.w, serveBtn.h, 22);
+
+  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
+  textAlign(CENTER, CENTER);
+  textSize(22);
+  text("SERVE", serveBtn.x, serveBtn.y);
+
+  cursor(enabled && hover ? HAND : ARROW);
+}
+
+// ----------------------
+// INPUT HANDLERS
+// ----------------------
+function gameMousePressed() {
+  if (phase !== "MIX") return;
+
+  checkPick("base", TEA_BASES);
+  checkPick("syrup", SYRUPS);
+  checkPick("topping", TOPPINGS);
+
+  const enabled = selection.base && selection.syrup && selection.topping;
+  if (enabled && isHover(serveBtn)) serveDrink();
+}
+
+function gameKeyPressed() {
+  if (key === "v" || key === "V") {
+    visionMode = visionMode === "NORMAL" ? "CVD" : "NORMAL";
+  }
+
+  if (key === "r" || key === "R") {
+    currentScreen = "start";
+  }
+
+  if (keyCode === ENTER) {
+    if (
+      phase === "MIX" &&
+      selection.base &&
+      selection.syrup &&
+      selection.topping
+    ) {
+      serveDrink();
+    }
+  }
+}
+
+function checkPick(slotKey, list) {
+  for (let i = 0; i < list.length; i++) {
+    const card = list[i]._card;
+    if (card && isHover(card)) {
+      selection[slotKey] = list[i];
+      return;
+    }
+  }
+}
+
+// ----------------------
+// ROUND LOGIC
+// ----------------------
+function startRound() {
+  order = {
+    base: random(TEA_BASES),
+    syrup: random(SYRUPS),
+    topping: random(TOPPINGS),
+  };
+
+  selection.base = null;
+  selection.syrup = null;
+  selection.topping = null;
+
+  monsterColours = [];
+  for (let i = 0; i < 4; i++) {
+    monsterColours.push([random(150, 255), random(150, 255), random(150, 255)]);
+  }
+  const previewMs = max(1200, 2500 - (round - 1) * 120);
+  const mixMs = max(5000, 9000 - (round - 1) * 200);
+
+  orderPreviewUntil = millis() + previewMs;
+  mixEndsAt = millis() + mixMs;
+
+  phase = "PREVIEW";
+}
+
+function serveDrink() {
+  const ok =
+    selection.base &&
+    selection.syrup &&
+    selection.topping &&
+    selection.base.id === order.base.id &&
+    selection.syrup.id === order.syrup.id &&
+    selection.topping.id === order.topping.id;
+
+  if (ok) {
+    score += 100;
+    endingText = "Perfect boba!\nCustomer tips you $2.";
+    currentScreen = "win";
+  } else {
+    score = max(0, score - 30);
+    endingText =
+      'MYSTERY BOBA CREATED.\nCustomer: "' +
+      random([
+        "Why is it... savory?",
+        "This tastes like tax season.",
+        "Honeydew? More like honey-don't.",
+        "My boba is spiritually confused.",
+        "It’s giving ‘oops’.",
+      ]) +
+      '"';
+    currentScreen = "lose";
+  }
+}
+
+// Simple “CVD mode” (keeps within course scope)
+// In CVD mode, compress red & green closer → harder to tell some choices apart.
+function getShownColor(rgb) {
+  if (visionMode === "NORMAL") return rgb;
+
+  const r = rgb[0];
+  const g = rgb[1];
+  const b = rgb[2];
+  const avg = (r + g) / 2;
+
+  return [avg, avg, b];
+}
