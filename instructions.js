@@ -25,7 +25,7 @@ function drawInstr() {
       "3. Click SERVE before time runs out\n\n" +
       "Keys:\n" +
       "R = restart (back to title)\n" +
-      "V = turn on Colour Vision Deficiency mode",
+      "V = toggle vision mode (Normal/CVD)",
     width / 2,
     270,
   );

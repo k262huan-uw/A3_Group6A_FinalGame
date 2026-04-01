@@ -76,7 +76,7 @@ function drawMenuButton(btn, primary) {
 function startNewShift() {
   score = 0;
   round = 1;
-  visionMode = "NORMAL";
+  visionMode = "CVD";
   startRound();
 }
 

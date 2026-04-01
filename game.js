@@ -20,6 +20,7 @@ const TOPPINGS = [
   { id: "pud", label: "Pudding", c: [245, 215, 120] },
 ];
 
+let cvdType = "DEUTAN";
 const serveBtn = { x: 640, y: 400, w: 260, h: 86 };
 
 // ----------------------
@@ -34,6 +35,23 @@ const MOCHI = {
   inkDark: [30, 35, 45],
   accent: [255, 205, 120],
 };
+
+// ----------------------
+// DIFFICULTY FUNCTION
+// ----------------------
+
+function getMonochromeFactor() {
+  // increases every round
+  let factor = (round - 1) * 0.12;
+
+  // stronger effect in CVD mode
+  if (visionMode === "CVD") {
+    factor += 0.2;
+  }
+
+  // cap so it never becomes fully invisible
+  return constrain(factor, 0, 0.9);
+}
 
 // ----------------------
 // SCREEN DRAW
@@ -117,7 +135,9 @@ function drawMochiHUD() {
       "s" +
       "  •  Vision " +
       visionMode +
-      " (V) •  R = Restart",
+      " (" +
+      cvdType +
+      ") (V) •  C = Switch •  R = Restart",
     width / 2,
     70,
   );
@@ -394,6 +414,13 @@ function gameKeyPressed() {
       serveDrink();
     }
   }
+
+  // switch CVD type
+  if (key === "c" || key === "C") {
+    if (cvdType === "DEUTAN") cvdType = "PROTAN";
+    else if (cvdType === "PROTAN") cvdType = "TRITAN";
+    else cvdType = "DEUTAN";
+  }
 }
 
 function checkPick(slotKey, list) {
@@ -420,17 +447,13 @@ function startRound() {
   selection.syrup = null;
   selection.topping = null;
 
-  monsterColours = [];
-  for (let i = 0; i < 4; i++) {
-    monsterColours.push([random(150, 255), random(150, 255), random(150, 255)]);
-  }
-  const previewMs = max(1200, 2500 - (round - 1) * 120);
-  const mixMs = max(5000, 9000 - (round - 1) * 200);
-
-  orderPreviewUntil = millis() + previewMs;
-  mixEndsAt = millis() + mixMs;
-
+  orderPreviewUntil = millis() + 2000;
   phase = "PREVIEW";
+
+  let timeLimit = 5000 - (round - 1) * 400;
+  timeLimit = max(1800, timeLimit);
+
+  mixEndsAt = orderPreviewUntil + timeLimit;
 }
 
 function serveDrink() {
@@ -462,15 +485,70 @@ function serveDrink() {
   }
 }
 
-// Simple “CVD mode” (keeps within course scope)
 // In CVD mode, compress red & green closer → harder to tell some choices apart.
+// choose which deficiency you want to simulate
+
+function getMonochromeFactor() {
+  // if NORMAL → no fade at all
+  if (visionMode === "NORMAL") return 0;
+
+  let factor = (round - 1) * 0.1;
+
+  return constrain(factor, 0, 0.92);
+}
+
+function applyCVD(rgb) {
+  let r = rgb[0];
+  let g = rgb[1];
+  let b = rgb[2];
+
+  if (visionMode !== "CVD") {
+    return [r, g, b];
+  }
+
+  if (cvdType === "DEUTAN") {
+    // greens shift toward red
+    let rg = (r + g) / 2;
+    r = lerp(r, rg, 0.5);
+    g = lerp(g, rg, 0.8);
+  } else if (cvdType === "PROTAN") {
+    // reds shift toward green and look less bright
+    let rg = (r + g) / 2;
+    r = lerp(r, rg, 0.8);
+    g = lerp(g, rg, 0.4);
+    r *= 0.6;
+  } else if (cvdType === "TRITAN") {
+    // blue-green confusion, plus some yellow-red confusion
+    let bg = (b + g) / 2;
+    b = lerp(b, bg, 0.85);
+    g = lerp(g, bg, 0.5);
+
+    let yr = (r + g) / 2;
+    r = lerp(r, yr, 0.25);
+  }
+
+  return [constrain(r, 0, 255), constrain(g, 0, 255), constrain(b, 0, 255)];
+}
+
 function getShownColor(rgb) {
-  if (visionMode === "NORMAL") return rgb;
+  let r = rgb[0];
+  let g = rgb[1];
+  let b = rgb[2];
 
-  const r = rgb[0];
-  const g = rgb[1];
-  const b = rgb[2];
-  const avg = (r + g) / 2;
+  // IF NORMAL → return original colour immediately
+  if (visionMode === "NORMAL") {
+    return [r, g, b];
+  }
 
-  return [avg, avg, b];
+  let cvd = applyCVD(rgb);
+
+  // grayscale fade after CVD shift
+  let gray = 0.299 * cvd[0] + 0.587 * cvd[1] + 0.114 * cvd[2];
+  let mono = getMonochromeFactor();
+
+  return [
+    lerp(cvd[0], gray, mono),
+    lerp(cvd[1], gray, mono),
+    lerp(cvd[2], gray, mono),
+  ];
 }
