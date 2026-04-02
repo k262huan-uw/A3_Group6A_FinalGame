@@ -172,7 +172,7 @@ function drawMochiMonster(x, y, size, idx, mood) {
     orangeMonsterNeutral,
   ];
 
-  const monsterMood = mood === "active" ? happyMonster : neutralMonster;
+  const monsterMood = mood === "active" ? neutralMonster : happyMonster;
   const img = monsterMood[idx];
   if (!img) return;
 
