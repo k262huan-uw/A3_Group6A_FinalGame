@@ -10,6 +10,7 @@ let pinkMonsterNeutral;
 let blueMonsterNeutral;
 let greenMonsterNeutral;
 let orangeMonsterNeutral;
+let mainBg;
 
 function preload() {
   titleFont = loadFont("assets/fonts/PressStart2P-Regular.ttf");
@@ -23,25 +24,15 @@ function preload() {
   greenMonsterNeutral = loadImage("assets/greenmonsterneutral.png");
   orangeMonster = loadImage("assets/orangemonster.png");
   orangeMonsterNeutral = loadImage("assets/orangemonsterneutral.png");
+
+  mainBg = loadImage("assets/mainbackground.png");
 }
 
 function drawStart() {
-  drawMochiSky();
-  // Big title sign
+  imageMode(CORNER);
+  image(mainBg, 0, 0, width, height);
   noStroke();
-  fill(255, 255, 255);
-  rectMode(CENTER);
-  rect(width / 2, 180, 640, 140, 26);
-
-  fill(40, 45, 60);
-  textAlign(CENTER, CENTER);
-  textSize(44);
   textFont(titleFont);
-  text("BOBA BAR", width / 2, 170);
-
-  textSize(18);
-  fill(70, 75, 90);
-  text("Monster Mayhem", width / 2, 210);
 
   // Buttons
   drawMenuButton(playBtn, true);
@@ -51,7 +42,7 @@ function drawStart() {
 
   cursor(isHover(playBtn) || isHover(instrBtn) ? HAND : ARROW);
 
-  // Cute monsters on counter
+  // monsters on counter
   drawMonsterLineDecor();
 }
 
