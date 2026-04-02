@@ -21,7 +21,7 @@ const TOPPINGS = [
 ];
 
 let cvdType = "DEUTAN";
-const serveBtn = { x: 1500, y: 400, w: 260, h: 86 };
+const serveBtn = { x: 1000, y: 400, w: 260, h: 86 };
 
 // ----------------------
 // MOCHI STYLE COLOURS
