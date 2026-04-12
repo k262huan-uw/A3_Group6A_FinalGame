@@ -1,5 +1,6 @@
 let currentScreen = "start";
 let endingText = "";
+let roundAnnounce = 0;
 
 // Shared game state
 let score = 0;
@@ -14,16 +15,13 @@ let selection = { base: null, syrup: null, topping: null };
 
 let visionMode = "CVD"; // NORMAL or CVD
 
-let monsterColours = [
-  [600, 170, 185],
-  [185, 235, 170],
-  [170, 210, 255],
-  [240, 190, 255],
-];
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textFont("sans-serif");
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function draw() {

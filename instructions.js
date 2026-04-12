@@ -1,20 +1,25 @@
-const backBtn = { y: 710, w: 260, h: 86, label: "BACK" };
+let backBtn = {
+  y: height * 0.888,
+  w: width * 0.217,
+  h: height * 0.108,
+  label: "BACK",
+};
 
 function drawInstr() {
   background("lavender");
   noStroke();
   fill(255, 255, 255, 235);
   rectMode(CENTER);
-  rect(width / 2, 360, 680, 520, 26);
+  rect(width / 2, height * 0.45, width * 0.567, height * 0.65, 26);
 
   fill(40, 45, 60);
   textAlign(CENTER, TOP);
-  textSize(40);
-  text("HOW TO PLAY", width / 2, 180);
+  textSize(height * 0.05);
+  text("HOW TO PLAY", width / 2, height * 0.225);
 
   fill(70, 75, 90);
-  textSize(11.5);
-  textLeading(28);
+  textSize(height * 0.014);
+  textLeading(height * 0.035);
   textAlign(CENTER, TOP);
 
   text(
@@ -27,12 +32,15 @@ function drawInstr() {
       "R = restart (back to title)\n" +
       "V = toggle vision mode (Normal/CVD)",
     width / 2,
-    270,
+    height * 0.338,
   );
 
   // Button
-  drawInstrButton(backBtn);
   backBtn.x = width / 2;
+  backBtn.y = height * 0.888;
+  backBtn.w = width * 0.217;
+  backBtn.h = height * 0.108;
+  drawInstrButton(backBtn);
   cursor(isHover(backBtn) ? HAND : ARROW);
 }
 
@@ -52,6 +60,6 @@ function drawInstrButton(btn) {
 
   fill(40, 45, 60);
   textAlign(CENTER, CENTER);
-  textSize(22);
+  textSize(height * 0.028);
   text(btn.label, btn.x, btn.y);
 }

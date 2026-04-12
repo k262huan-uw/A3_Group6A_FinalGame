@@ -3,20 +3,20 @@ function drawLose() {
   noStroke();
   fill(255, 255, 255, 235);
   rectMode(CENTER);
-  rect(width / 2, height / 2, 650, 420, 26);
+  rect(width / 2, height / 2, width * 0.542, height * 0.525, 26);
 
   fill(40, 45, 60);
   textAlign(CENTER, CENTER);
-  textSize(45);
-  text("MYSTERY BOBA", width / 2, 340);
+  textSize(height * 0.056);
+  text("MYSTERY BOBA", width / 2, height * 0.45);
 
   fill(70, 75, 90);
-  textSize(14);
+  textSize(height * 0.018);
   text(endingText, width / 2, height / 2);
 
   fill("red");
-  textSize(14);
-  text("Click or press ENTER for next customer.", width / 2, 600);
+  textSize(height * 0.018);
+  text("Click or press ENTER for next customer.", width / 2, height * 0.75);
 }
 
 function loseMousePressed() {

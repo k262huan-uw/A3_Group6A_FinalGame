@@ -1,5 +1,5 @@
-const playBtn = { y: 500, w: 280, h: 86, label: "START SHIFT" };
-const instrBtn = { y: 620, w: 280, h: 86, label: "INSTRUCTIONS" };
+let playBtn = { w: 280, h: 86, label: "START SHIFT" };
+let instrBtn = { w: 280, h: 86, label: "INSTRUCTIONS" };
 
 let titleFont;
 let pinkMonster;
@@ -34,11 +34,19 @@ function drawStart() {
   noStroke();
   textFont(titleFont);
 
+  // Update button sizes dynamically to maintain proportions
+  playBtn.w = width * 0.233;
+  playBtn.h = height * 0.108;
+  instrBtn.w = width * 0.233;
+  instrBtn.h = height * 0.108;
+
   // Buttons
   drawMenuButton(playBtn, true);
   playBtn.x = width / 2;
+  playBtn.y = height / 2 - height * 0.038;
   drawMenuButton(instrBtn, false);
   instrBtn.x = width / 2;
+  instrBtn.y = height / 2 + height * 0.1;
 
   cursor(isHover(playBtn) || isHover(instrBtn) ? HAND : ARROW);
 
@@ -80,7 +88,7 @@ function drawMenuButton(btn, primary) {
 
   fill(40, 45, 60);
   textAlign(CENTER, CENTER);
-  textSize(22);
+  textSize(height * 0.028);
   text(btn.label, btn.x, btn.y);
 }
 
@@ -91,32 +99,15 @@ function startNewShift() {
   startRound();
 }
 
-function drawMochiSky() {
-  background(233, 246, 255);
-
-  noStroke();
-  fill(255, 210, 225);
-  ellipse(170, 180, 340, 340);
-  ellipse(560, 170, 550, 550);
-
-  fill(255, 255, 255, 200);
-  ellipse(90, 78, 60, 60);
-  fill(255, 255, 255);
-  ellipse(120, 70, 35, 35);
-  fill(255, 255, 255, 200);
-  ellipse(700, 50, 90, 90);
-  fill(255, 255, 255);
-  ellipse(660, 75, 50, 50);
-
-  // Counter base strip
-  fill(170, 230, 220);
-  rectMode(CORNER);
-  rect(0, 710, width, 110);
-}
-
 function drawMonsterLineDecor() {
-  const xs = [170, 310, 450, 590];
-  for (let i = 0; i < 4; i++) {
-    drawMochiMonster(xs[i], 720, 70, i, "waiting");
+  const count = 4;
+  const spacing = width * 0.25;
+  const totalWidth = (count - 1) * spacing;
+
+  const startX = width / 2 - totalWidth / 2;
+
+  for (let i = 0; i < count; i++) {
+    const x = startX + i * spacing;
+    drawMochiMonster(x, height * 0.8, height * 0.088, i, "waiting");
   }
 }
