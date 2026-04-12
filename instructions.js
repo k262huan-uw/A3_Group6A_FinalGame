@@ -1,7 +1,8 @@
 let backBtn = {
-  y: height * 0.888,
-  w: width * 0.217,
-  h: height * 0.108,
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
   label: "BACK",
 };
 
@@ -37,15 +38,17 @@ function drawInstr() {
 
   // Button
   backBtn.x = width / 2;
-  backBtn.y = height * 0.888;
-  backBtn.w = width * 0.217;
-  backBtn.h = height * 0.108;
+  backBtn.y = height * 0.86;
+  backBtn.w = width * 0.25;
+  backBtn.h = height * 0.1;
+
   drawInstrButton(backBtn);
-  cursor(isHover(backBtn) ? HAND : ARROW);
 }
 
 function instrMousePressed() {
-  if (isHover(backBtn)) currentScreen = "start";
+  if (isHover(backBtn)) {
+    currentScreen = "start";
+  }
 }
 
 function drawInstrButton(btn) {
