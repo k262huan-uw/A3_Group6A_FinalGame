@@ -167,13 +167,13 @@ function drawCustomerRow(showTrueOrder) {
   rectMode(CORNER);
   rect(width * 0.025, height * 0.13, width * 0.95, height * 0.22, 22);
 
-  // customers - distribute evenly across the panel
+  // customers
   const panelLeft = width * 0.025;
   const panelWidth = width * 0.4;
   const spacing = panelWidth / 4;
   const xs = [];
   for (let i = 0; i < 4; i++) {
-    xs.push(panelLeft + spacing * (i + 0.5));
+    xs.push(panelLeft + spacing * (i + 1.4));
   }
 
   for (let i = 0; i < 4; i++) {
