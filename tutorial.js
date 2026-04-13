@@ -336,7 +336,7 @@ function _drawTutWelcome() {
   fill(80, 120, 200);
   textAlign(CENTER, CENTER);
   textSize(25);
-  text("COLOUR CONFUSION BOBA BAR", cx, height / 2 - 185);
+  text("Boba Bar Monster Mayhem", cx, height / 2 - 185);
   if (bodyFont) textFont(bodyFont);
 
   fill(43, 67, 186);
@@ -919,7 +919,7 @@ function _drawTutPractice() {
 function _drawTutBinCol(title, list, x, y, slotKey) {
   const colW = 190;
   noStroke();
-  fill(255, 255, 255, 210);
+  fill(255, 255, 255);
   rectMode(CORNER);
   rect(x, y - 28, colW, 34 + list.length * 52, 14);
 

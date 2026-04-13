@@ -221,7 +221,7 @@ function drawCVDShift() {
   text(
     "How to match orders: compare with the true-colour order bubble, then use shape symbols\n" +
       "to confirm category when colours look similar (circle = base, diamond = syrup, triangle = topping).",
-    width / 2,
+    width / 2 - 350,
     stripY + 80,
     650,
   );
