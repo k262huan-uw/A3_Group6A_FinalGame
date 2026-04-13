@@ -48,6 +48,7 @@ let pinkMonsterNeutral,
   greenMonsterNeutral,
   orangeMonsterNeutral;
 let mainBg;
+let orderBg;
 let titleFont;
 let bodyFont;
 let bgmTrack;

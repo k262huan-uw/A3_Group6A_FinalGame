@@ -129,7 +129,7 @@ function drawGame() {
 function drawGameHUD() {
   // Background strip
   noStroke();
-  fill(255, 255, 255, 225);
+  fill(255, 255, 255);
   rectMode(CORNER);
   rect(0, 0, width, 68);
 
@@ -213,18 +213,12 @@ function drawPreviewBanner() {
 // ── Order area (customer + order bubble) ──────────────────
 // showOrder: whether to render the order bubble at all (false = hide in Act 3 MIX phase)
 function drawOrderArea(showOrder) {
-  // Panel
-  noStroke();
-  fill(MOCHI.sky[0], MOCHI.sky[1], MOCHI.sky[2], 115);
-  rectMode(CORNER);
-  rect(20, 74, width - 40, 160, 16);
-
   // "Customer wants:" label
   fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
   textAlign(LEFT, TOP);
   textStyle(BOLD);
   textSize(13);
-  text("CUSTOMER WANTS:", 36, 80);
+  text("CUSTOMER WANTS:", 40, 80);
   textStyle(NORMAL);
 
   // Order bubble — always TRUE colours (what the customer expects)
@@ -238,20 +232,20 @@ function drawOrderArea(showOrder) {
   }
 
   // Customer monsters
-  const xs = [150, 255, 360, 465];
+  const xs = [140, 285, 430, 575];
   for (let i = 0; i < 4; i++) {
     const mood = i === monsterSwap ? "active" : "waiting";
-    drawMochiMonster(xs[i], 220, 55, (i + monsterSwap) % 4, mood);
+    drawMochiMonster(xs[i], height * 0.38, 100, (i + monsterSwap) % 4, mood);
   }
 }
 
 function drawOrderBubble(x, y) {
   noStroke();
-  fill(255, 255, 255, 235);
+  fill(255, 255, 255);
   rectMode(CORNER);
   rect(x, y, 530, 76, 28);
   // Tail
-  triangle(x + 20, y + 76, x + 58, y + 76, x + 40, y + 112);
+  triangle(x + 20, y + 70, x + 58, y + 70, x + 40, y + 112);
 
   const slots = [
     { label: "Base", item: order.base, px: x + 18 },
@@ -282,7 +276,7 @@ function drawOrderBubble(x, y) {
       rectMode(CENTER);
       rect(0, 0, 16, 16);
       pop();
-    } else triangle(sc, y + 16, sc - 11, y + 48, sc + 11, y + 48);
+    } else triangle(sc, y + 18, sc - 11, y + 48, sc + 11, y + 48);
     noStroke();
 
     fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
@@ -299,24 +293,6 @@ function drawOrderBubble(x, y) {
 
 // ── Work area: bins + cup + serve button ──────────────────
 function drawWorkArea() {
-  // Counter surface
-  noStroke();
-  fill(MOCHI.counterTop[0], MOCHI.counterTop[1], MOCHI.counterTop[2], 145);
-  rectMode(CORNER);
-  rect(20, 270, width - 40, 95, 14);
-
-  // "What you see:" label
-  fill(visionMode === "CVD" ? [180, 60, 60] : [40, 50, 70]);
-  textAlign(LEFT, TOP);
-  textSize(11);
-  text(
-    visionMode === "CVD"
-      ? "WHAT YOU SEE (through " + cvdType + " CVD):"
-      : "WHAT YOU SEE (normal vision):",
-    36,
-    276,
-  );
-
   // Ingredient bins
   drawIngredientBins();
 
@@ -331,9 +307,9 @@ function drawWorkArea() {
 
 // ── Ingredient bins ───────────────────────────────────────
 function drawIngredientBins() {
-  const binGap = 210;
-  const startX = 40;
-  const y = 390;
+  const binGap = 363;
+  const startX = 95;
+  const y = 560;
 
   drawBinColumn("TEA BASE", TEA_BASES, startX, y, "base");
   drawBinColumn("SYRUP", SYRUPS, startX + binGap, y, "syrup");
@@ -345,7 +321,7 @@ function drawBinColumn(title, list, x, y, slotKey) {
 
   // Column background
   noStroke();
-  fill(255, 255, 255, 210);
+  fill(255, 255, 255);
   rectMode(CORNER);
   rect(x, y - 30, colW, 36 + list.length * 52, 14);
 
@@ -460,7 +436,7 @@ function drawCupMochi() {
   fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
   textAlign(CENTER, TOP);
   textSize(10);
-  text("your drink", cx, cy + 84);
+  text("Your Drink", cx, cy + 84);
 }
 
 // ── Serve button ──────────────────────────────────────────
@@ -474,7 +450,7 @@ function drawServeButton() {
   else if (hover) fill(250, 190, 85);
   else fill(255, 205, 120);
 
-  rect(serveBtn.x, serveBtn.y, serveBtn.w, serveBtn.h, 16);
+  rect(serveBtn.x - 60, serveBtn.y - 65, serveBtn.w, serveBtn.h, 16);
 
   fill(
     ready ? MOCHI.inkDark[0] : 120,
@@ -483,7 +459,7 @@ function drawServeButton() {
   );
   textAlign(CENTER, CENTER);
   textSize(18);
-  text("SERVE ✓", serveBtn.x, serveBtn.y);
+  text("SERVE ✓", serveBtn.x - 60, serveBtn.y - 65);
 
   if (ready) cursor(hover ? HAND : ARROW);
 }
