@@ -1069,7 +1069,7 @@ function _drawTutCoachOverlay() {
   text(msg, tipX, tipY);
 
   // Arrow
-  fill(40, 40, 60, 220);
+  fill(80, 160, 230);
   triangle(tipX - 10, tipY + 22, tipX + 10, tipY + 22, tipX, tgt.y - 6);
 }
 
