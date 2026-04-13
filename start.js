@@ -17,7 +17,8 @@ function preload() {
   orangeMonster = loadImage("assets/orangemonster.png");
   orangeMonsterNeutral = loadImage("assets/orangemonsterneutral.png");
 
-  mainBg = loadImage("assets/mainbackground.png");
+  mainBg = loadImage("assets/mainbackground.jpeg");
+  orderBg = loadImage("assets/orderbg.jpeg");
 }
 
 function drawStart() {
@@ -32,9 +33,8 @@ function drawStart() {
 
   // Buttons
   drawMenuButton(playBtn, true);
-  drawMenuButton(instrBtn, false);
 
-  cursor(isHover(playBtn) || isHover(instrBtn) ? HAND : ARROW);
+  cursor(isHover(playBtn) ? HAND : ARROW);
 
   // monsters on counter
   drawMonsterLineDecor();
@@ -105,7 +105,14 @@ function drawMochiSky() {
 }
 
 function drawMonsterLineDecor() {
-  const xs = [170, 310, 450, 590];
+  const spacing = 140;
+  const centerX = width / 2;
+  const xs = [
+    centerX - spacing * 1.5,
+    centerX - spacing * 0.5,
+    centerX + spacing * 0.5,
+    centerX + spacing * 1.5,
+  ];
   for (let i = 0; i < 4; i++) {
     drawMochiMonster(xs[i], 720, 70, i, "waiting");
   }
