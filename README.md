@@ -18,7 +18,7 @@ CVD mode intentionally alters the colour palette, making it more challenging to 
 
 At the end of each act, there is a debrief section which allows the player to learn more about CVD.
 
-# Setup and Interaction Instructions: How to run and play the game.
+# Setup and Interaction Instructions:
 
 As context you run a bubble tea counter for mochi monsters.
 Launch the game and click "Start Shift" to begin.
