@@ -1,19 +1,11 @@
-let playBtn = { w: 280, h: 86, label: "START SHIFT" };
-let instrBtn = { w: 280, h: 86, label: "INSTRUCTIONS" };
-
-let titleFont;
-let pinkMonster;
-let blueMonster;
-let greenMonster;
-let orangeMonster;
-let pinkMonsterNeutral;
-let blueMonsterNeutral;
-let greenMonsterNeutral;
-let orangeMonsterNeutral;
-let mainBg;
+// Variables (titleFont, pinkMonster, etc., mainBg) are declared in main.js
+const playBtn = { x: 0, y: 500, w: 280, h: 86, label: "START GAME" };
+const instrBtn = { x: 0, y: 620, w: 280, h: 86, label: "INSTRUCTIONS" };
 
 function preload() {
   titleFont = loadFont("assets/fonts/PressStart2P-Regular.ttf");
+  bodyFont = "Poppins";
+  bgmTrack = loadSound("assets/bgm.mp3");
 
   // monsters
   pinkMonster = loadImage("assets/pinkmonsterhappy.png");
@@ -29,24 +21,18 @@ function preload() {
 }
 
 function drawStart() {
+  // Set button centres first so hover detection works on frame 1
+  playBtn.x = width / 2;
+  instrBtn.x = width / 2;
+
   imageMode(CORNER);
   image(mainBg, 0, 0, width, height);
   noStroke();
-  textFont(titleFont);
-
-  // Update button sizes dynamically to maintain proportions
-  playBtn.w = width * 0.233;
-  playBtn.h = height * 0.108;
-  instrBtn.w = width * 0.233;
-  instrBtn.h = height * 0.108;
+  if (titleFont) textFont(titleFont);
 
   // Buttons
   drawMenuButton(playBtn, true);
-  playBtn.x = width / 2;
-  playBtn.y = height / 2 - height * 0.038;
   drawMenuButton(instrBtn, false);
-  instrBtn.x = width / 2;
-  instrBtn.y = height / 2 + height * 0.1;
 
   cursor(isHover(playBtn) || isHover(instrBtn) ? HAND : ARROW);
 
@@ -56,17 +42,18 @@ function drawStart() {
 
 function startMousePressed() {
   if (isHover(playBtn)) {
-    startNewShift();
-    currentScreen = "game";
+    playSound("click");
+    startNewGame();
   } else if (isHover(instrBtn)) {
+    playSound("click");
     currentScreen = "instr";
   }
 }
 
 function startKeyPressed() {
   if (keyCode === ENTER) {
-    startNewShift();
-    currentScreen = "game";
+    playSound("click");
+    startNewGame();
   }
   if (key === "i" || key === "I") currentScreen = "instr";
 }
@@ -88,26 +75,38 @@ function drawMenuButton(btn, primary) {
 
   fill(40, 45, 60);
   textAlign(CENTER, CENTER);
-  textSize(height * 0.028);
+  textSize(22);
   text(btn.label, btn.x, btn.y);
 }
 
-function startNewShift() {
-  score = 0;
-  round = 1;
-  visionMode = "CVD";
-  startRound();
+// startNewShift replaced by startNewGame() in main.js
+
+function drawMochiSky() {
+  background(233, 246, 255);
+
+  noStroke();
+  fill(255, 210, 225);
+  ellipse(170, 180, 340, 340);
+  ellipse(560, 170, 550, 550);
+
+  fill(255, 255, 255, 200);
+  ellipse(90, 78, 60, 60);
+  fill(255, 255, 255);
+  ellipse(120, 70, 35, 35);
+  fill(255, 255, 255, 200);
+  ellipse(700, 50, 90, 90);
+  fill(255, 255, 255);
+  ellipse(660, 75, 50, 50);
+
+  // Counter base strip
+  fill(170, 230, 220);
+  rectMode(CORNER);
+  rect(0, 710, width, 110);
 }
 
 function drawMonsterLineDecor() {
-  const count = 4;
-  const spacing = width * 0.25;
-  const totalWidth = (count - 1) * spacing;
-
-  const startX = width / 2 - totalWidth / 2;
-
-  for (let i = 0; i < count; i++) {
-    const x = startX + i * spacing;
-    drawMochiMonster(x, height * 0.8, height * 0.088, i, "waiting");
+  const xs = [170, 310, 450, 590];
+  for (let i = 0; i < 4; i++) {
+    drawMochiMonster(xs[i], 720, 70, i, "waiting");
   }
 }
