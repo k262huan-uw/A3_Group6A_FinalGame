@@ -54,6 +54,10 @@ const TOPPINGS = [
 // Serve button layout
 const serveBtn = { x: 0, y: 0, w: 200, h: 58 };
 
+// Monster state
+let monsterOrder = [0, 1, 2, 3];
+let monsterCount = 4;
+
 // =====================
 // CVD SIMULATION
 // =====================
@@ -176,14 +180,14 @@ function drawGameHUD() {
 
   // Act 2: label status indicator
   if (act === 2) {
-    const lblCol = showLabels ? [60, 160, 90] : [200, 80, 80];
+    const lblCol = showLabels ? [100, 170, 90] : [200, 80, 80];
     fill(lblCol[0], lblCol[1], lblCol[2]);
     textSize(12);
     textAlign(RIGHT, CENTER);
     text(
       showLabels ? "Accessibility Labels: ON" : "Accessibility Labels: OFF",
-      width - 16,
-      52,
+      width - 80,
+      50,
     );
   }
 }
@@ -213,29 +217,16 @@ function drawPreviewBanner() {
 // ── Order area (customer + order bubble) ──────────────────
 // showOrder: whether to render the order bubble at all (false = hide in Act 3 MIX phase)
 function drawOrderArea(showOrder) {
-  // "Customer wants:" label
-  fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
-  textAlign(LEFT, TOP);
-  textStyle(BOLD);
-  textSize(13);
-  text("CUSTOMER WANTS:", 40, 80);
-  textStyle(NORMAL);
-
   // Order bubble — always TRUE colours (what the customer expects)
   if (showOrder && order) {
     drawOrderBubble(40, 96);
-  } else if (!showOrder) {
-    fill(180, 180, 200, 160);
-    textAlign(CENTER, CENTER);
-    textSize(14);
-    text("Order hidden - rely on your memory!", width / 2, 160);
   }
 
   // Customer monsters
   const xs = [140, 285, 430, 575];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < monsterCount; i++) {
     const mood = i === monsterSwap ? "active" : "waiting";
-    drawMochiMonster(xs[i], height * 0.38, 100, (i + monsterSwap) % 4, mood);
+    drawMochiMonster(xs[i], height * 0.38, 100, monsterOrder[i], mood);
   }
 }
 
@@ -260,34 +251,26 @@ function drawOrderBubble(x, y) {
     noStroke();
     fill(c[0], c[1], c[2]);
     rectMode(CORNER);
-    rect(s.px, y + 12, 40, 40, 8);
+    rect(s.px, y + 18, 40, 40, 8);
 
     // Shape symbol (white outline) so players can use shape not just colour
     noFill();
     stroke(255, 255, 255, 210);
     strokeWeight(2);
     const sc = s.px + 20;
-    const sr = y + 32;
-    if (i === 0) ellipse(sc, sr, 20, 20);
-    else if (i === 1) {
-      push();
-      translate(sc, sr);
-      rotate(PI / 4);
-      rectMode(CENTER);
-      rect(0, 0, 16, 16);
-      pop();
-    } else triangle(sc, y + 18, sc - 11, y + 48, sc + 11, y + 48);
+    const sr = y + 35;
+
     noStroke();
 
     fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
     textAlign(LEFT, CENTER);
     textStyle(BOLD);
     textSize(13);
-    text(s.label, s.px + 48, y + 24);
+    text(s.label, s.px + 48, y + 32);
     textStyle(NORMAL);
     fill(100, 100, 130);
     textSize(11);
-    text(s.item.label, s.px + 48, y + 42);
+    text(s.item.label, s.px + 48, y + 46);
   }
 }
 
@@ -300,8 +283,8 @@ function drawWorkArea() {
   drawCupMochi();
 
   // Serve button
-  serveBtn.x = width - 130;
-  serveBtn.y = height - 80;
+  serveBtn.x = width - 188;
+  serveBtn.y = height - 150;
   drawServeButton();
 }
 
@@ -362,19 +345,19 @@ function drawBinColumn(title, list, x, y, slotKey) {
     noStroke();
     fill(shown[0], shown[1], shown[2]);
     rectMode(CORNER);
-    rect(x + 8, cardY + 8, 28, 28, 6);
+    rect(x + 20, cardY + 8, 28, 28, 6);
 
     // Ingredient name
     fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
     textAlign(LEFT, CENTER);
     textSize(12);
-    text(item.label, x + 44, cardY + 18);
+    text(item.label, x + 60, cardY + 24);
 
     // Act 2 accessibility label: actual colour name shown under swatch
     if (showLabels) {
       fill(60, 130, 200);
       textSize(9.5);
-      text("≈ " + item.colorName, x + 44, cardY + 33);
+      text("≈ " + item.colorName, x + 58, cardY + 38);
     }
 
     // Chosen checkmark icon
@@ -450,7 +433,7 @@ function drawServeButton() {
   else if (hover) fill(250, 190, 85);
   else fill(255, 205, 120);
 
-  rect(serveBtn.x - 60, serveBtn.y - 65, serveBtn.w, serveBtn.h, 16);
+  rect(serveBtn.x, serveBtn.y, serveBtn.w, serveBtn.h, 16);
 
   fill(
     ready ? MOCHI.inkDark[0] : 120,
@@ -459,7 +442,7 @@ function drawServeButton() {
   );
   textAlign(CENTER, CENTER);
   textSize(18);
-  text("SERVE ✓", serveBtn.x - 60, serveBtn.y - 65);
+  text("SERVE ✓", serveBtn.x, serveBtn.y);
 
   if (ready) cursor(hover ? HAND : ARROW);
 }
@@ -553,6 +536,11 @@ function startRound() {
     mixEndsAt = millis() + timeLimit;
     phase = "MIX";
   }
+
+  // Randomize monster colours and count each round
+  monsterOrder = shuffle([0, 1, 2, 3]);
+  monsterCount = floor(random(1, 5));
+  monsterSwap = floor(random(monsterCount));
 }
 
 function serveDrink() {
