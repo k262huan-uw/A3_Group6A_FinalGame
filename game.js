@@ -202,7 +202,7 @@ function drawPreviewBanner() {
   fill(180, 60, 60);
   textAlign(CENTER, CENTER);
   textSize(20);
-  text("MEMORISE THE ORDER!", width / 2, height / 2 - 10);
+  text("MEMORIZE THE ORDER!", width / 2, height / 2 - 10);
 
   const tLeft = max(0, orderPreviewUntil - millis());
   fill(100, 100, 130);

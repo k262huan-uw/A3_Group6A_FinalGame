@@ -221,7 +221,7 @@ function drawCVDShift() {
   text(
     "How to match orders: compare with the true-colour order bubble, then use shape symbols\n" +
       "to confirm category when colours look similar (circle = base, diamond = syrup, triangle = topping).",
-    width / 2 - 350,
+    width / 2 - 340,
     stripY + 80,
     650,
   );
@@ -300,13 +300,13 @@ function drawActDebrief() {
     noStroke();
     fill(ac[0], ac[1], ac[2], 40);
     rectMode(CORNER);
-    rect(width / 2 - 300, py - 6, 600, 56, 10);
+    rect(width / 2 - 300, py - 22, 600, 56, 10);
     fill(ac[0], ac[1], ac[2]);
     textSize(18);
-    text("•", width / 2 - 284, py + 16);
+    text("•", width / 2 - 284, py + 2);
     fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
     textSize(13);
-    text(d.points[i], width / 2 - 260, py + 4, 540);
+    text(d.points[i], width / 2 - 250, py, 540);
   }
 
   // Button
