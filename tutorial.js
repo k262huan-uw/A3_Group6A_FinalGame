@@ -980,7 +980,7 @@ function _drawTutBinCol(title, list, x, y, slotKey) {
       fill(80, 160, 230);
       textAlign(RIGHT, CENTER);
       textSize(14);
-      text("v", x + colW - 8, cardY + 22);
+      text("✓", x + colW - 15, cardY + 24);
     }
 
     cards.push({ card, item });
@@ -1069,7 +1069,7 @@ function _drawTutCoachOverlay() {
   text(msg, tipX, tipY);
 
   // Arrow
-  fill(80, 160, 230);
+  fill(40, 40, 60, 220);
   triangle(tipX - 10, tipY + 22, tipX + 10, tipY + 22, tipX, tgt.y - 6);
 }
 

@@ -1,8 +1,9 @@
-A3: Final Game - Boba Bar Monster Mayhem
+# A3: Final Game - Boba Bar Monster Mayhem
 
 Group6A
 
-Description:
+# Description:
+
 Our games concept is to help players understand colour vision deficiency by showing how colours may appear to someone with the disability. The player prepares orders by matching customer orders from selecting a base, syrup, and topping
 
 The game begins by prompting the player to start the game. Once in the game, the tutorial begins. Before starting the serving process of the game, the tutorial showcases the three levels that users will try to achieve. These levels include:
@@ -17,7 +18,8 @@ CVD mode intentionally alters the colour palette, making it more challenging to 
 
 At the end of each act, there is a debrief section which allows the player to learn more about CVD.
 
-Setup and Interaction Instructions: How to run and play the game.
+# Setup and Interaction Instructions: How to run and play the game.
+
 As context you run a bubble tea counter for mochi monsters.
 Launch the game and click "Start Shift" to begin.
 Customers appear with speech bubbles showing their drink order.
@@ -49,7 +51,7 @@ Keys:
 R = restart
 M = toggle music on/off
 
-Iteration Notes
+# Iteration Notes
 
 1. Level upgrades: As each round passes, progressively adding more features and increasing CVD levels.
 
@@ -61,5 +63,8 @@ Iteration Notes
 2. Add audio to elevate game experience
 3. Interactive tutorial screen
 
-References
+# References
+
 National Eye Institute. (n.d.). Types of color vision deficiency. U.S. Department of Health and Human Services. https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/color-blindness/types-color-vision-deficiency
+
+Music - Jazz Cafe Music by SolarFLEX via Pixabay. https://pixabay.com/music/beats-jazz-cafe-music-509921/

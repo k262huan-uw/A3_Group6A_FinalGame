@@ -365,7 +365,7 @@ function drawBinColumn(title, list, x, y, slotKey) {
       fill(80, 160, 230);
       textAlign(RIGHT, CENTER);
       textSize(16);
-      text("✓", x + colW - 8, cardY + 22);
+      text("✓", x + colW - 15, cardY + 24);
     }
 
     cursor(hover ? HAND : ARROW);
