@@ -250,7 +250,7 @@ const DEBRIEF_DATA = [
     colour: [200, 240, 200],
     accent: [60, 150, 60],
     points: [
-      "You experienced deuteranopia which isthe most common form of CVD.",
+      "You experienced deuteranopia which is the most common form of CVD.",
       "Red and green became much harder to tell apart, often looking similarly brownish.",
       "~8% of males navigate this every day: traffic lights, maps, food labels.",
       "Next: protanopia, where reds appear very dark and dim.",

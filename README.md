@@ -1,13 +1,21 @@
-A2: Midterm Game - Boba Bar Monster Mayhem
+A3: Final Game - Boba Bar Monster Mayhem
 
 Group6A
 
 Description:
-Our games concept is to help players understand colour vision deficiency by showing how colours may appear to someone with the disability. The player prepares orders by matching customer orders from selecting a base, syrup, and topping.
+Our games concept is to help players understand colour vision deficiency by showing how colours may appear to someone with the disability. The player prepares orders by matching customer orders from selecting a base, syrup, and topping
 
-After a short delay, the full ordering interface appears, displaying all available ingredients options to assemble the drink. The player can switch between two visual modes: Normal Vision (V Mode) and Colour Vision Deficiency Mode (CVD Mode).
+The game begins by prompting the player to start the game. Once in the game, the tutorial begins. Before starting the serving process of the game, the tutorial showcases the three levels that users will try to achieve. These levels include:
+Act 1 - Experience Deuternanopia,
+Act 2 - Learn to Adapt with Labels
+Act 3 - Everyday Challenges.
+The interactive tutorial teaches the player how to simply make drink orders and serve customers on the easiest level.
 
-CVD mode intentionally alters the colour palette, making it more challenging to distinguish between colours and complete the order within the time limit. This simulates the experience of having a colour vision deficiency and adds an extra layer of difficulty. Allowing players to toggle between these two modes helps them notice the subtle differences in visual perception and understand how colour accessibility can affect gameplay.
+After a short delay, the full ordering interface appears, displaying all available ingredients options to assemble the drink. The first few rounds is where users will serve customers without the CVD mode. This allows the player to adapt and play with the original colour hues before CVD. As the game progresses and levels get more intense, the colours of the boba drink will be in full CVD mode.
+
+CVD mode intentionally alters the colour palette, making it more challenging to distinguish between colours and complete the order within the time limit. This simulates the experience of having a colour vision deficiency and adds an extra layer of difficulty.
+
+At the end of each act, there is a debrief section which allows the player to learn more about CVD.
 
 Setup and Interaction Instructions: How to run and play the game.
 As context you run a bubble tea counter for mochi monsters.
@@ -39,20 +47,19 @@ Serve button, after selecting ingredients.
 
 Keys:
 R = restart
+M = toggle music on/off
 
 Iteration Notes
 
-a. Post-Playtest: Three changes made based on playtesting.
+1. Level upgrades: As each round passes, progressively adding more features and increasing CVD levels.
 
-1. Fixed the vision feature, so it automatically starts in CVD mode, making colour deficiency more visible
-2. Made it so the monsters change colours
-3. Removed unnecessary features
-
-b. Post-Showcase: Two planned improvements
-
-1. Level upgrades: As each round passes, progressively adding more features and options
-
-- Straws, ice/sugar level
-- Varying ingredients per drink, not all orders having toppings/syrup
+- The colours become more similar as the game progresses
+- In Act 3, the player has a few seconds to memorize the monster's orders then the order disappears on their screen and they have to select the correct toppings/syrup
+- CVD questions appear at times after the order is served.
+- At the end of the game, the player will recieve a score with the amount of orders they completed correctly and their accuracy.
 
 2. Add audio to elevate game experience
+3. Interactive tutorial screen
+
+References
+National Eye Institute. (n.d.). Types of color vision deficiency. U.S. Department of Health and Human Services. https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/color-blindness/types-color-vision-deficiency

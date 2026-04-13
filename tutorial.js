@@ -160,7 +160,7 @@ function _drawTutPrelude() {
       cx,
       height - 250,
     );
-    _drawTutNextBtn("CONTINUE  ->");
+    _drawTutNextBtn("CONTINUE →");
   }
 }
 
@@ -273,7 +273,7 @@ function _drawTutNextBtn(label, btnYOffset = 0) {
   fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
   textAlign(CENTER, CENTER);
   textSize(15);
-  text(label || "NEXT  ->", _TUT_NEXT.x, _TUT_NEXT.y);
+  text(label || "NEXT →", _TUT_NEXT.x, _TUT_NEXT.y);
   cursor(h ? HAND : ARROW);
 }
 
@@ -387,7 +387,7 @@ function _drawTutWelcome() {
   textStyle(NORMAL);
   text("Make the drinks right and try not to stand out!", cx, height / 2 + 126);
 
-  _drawTutNextBtn("START TUTORIAL  ->");
+  _drawTutNextBtn("START TUTORIAL  →");
   _drawTutStepDots(5, 0);
 }
 
@@ -528,7 +528,7 @@ function _drawTutOrder() {
     bodyW,
   );
 
-  _drawTutNextBtn("NEXT  ->");
+  _drawTutNextBtn("NEXT →");
   _drawTutStepDots(5, 1);
 }
 
@@ -647,7 +647,7 @@ function _drawTutCVD() {
     text(pairs[i].label, leftSwatchX + 40, rowY);
   }
 
-  _drawTutNextBtn("PRACTICE ROUND  ->", 45);
+  _drawTutNextBtn("PRACTICE ROUND →", 45);
   _drawTutStepDots(5, 2);
 }
 
@@ -774,7 +774,7 @@ function _drawTutShapes() {
     cardW - 90,
   );
 
-  _drawTutNextBtn("PRACTICE ROUND  ->");
+  _drawTutNextBtn("PRACTICE ROUND →");
   _drawTutStepDots(5, 3);
 }
 
@@ -910,7 +910,7 @@ function _drawTutPractice() {
   );
   textAlign(CENTER, CENTER);
   textSize(16);
-  text("SERVE  /", servX, servY);
+  text("SERVE ✓", servX, servY);
 
   // Glowing coach overlay
   _drawTutCoachOverlay();
@@ -998,7 +998,7 @@ function _drawTutCup() {
 
   stroke(MOCHI.outline[0], MOCHI.outline[1], MOCHI.outline[2]);
   strokeWeight(3);
-  fill(255, 255, 255, 200);
+  fill(255, 255, 255);
   rectMode(CENTER);
   rect(cx, cy, 110, 150, 18);
   noStroke();
@@ -1013,7 +1013,7 @@ function _drawTutCup() {
   fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
   textAlign(CENTER, TOP);
   textSize(10);
-  text("your drink", cx, cy + 84);
+  text("Your Drink", cx, cy + 84);
 }
 
 // Highlight the active area with a pulsing glow border + instruction tooltip
@@ -1030,9 +1030,9 @@ function _drawTutCoachOverlay() {
   ];
 
   const targets = [
-    { x: 40, y: 330, w: 190, h: height - 360 }, // base column area
-    { x: 250, y: 330, w: 190, h: height - 360 }, // syrup column area
-    { x: 460, y: 330, w: 190, h: height - 360 }, // topping column area
+    { x: 42, y: 330, w: 186, h: height - 615 }, // base column area
+    { x: 252, y: 330, w: 186, h: height - 565 }, // syrup column area
+    { x: 462, y: 330, w: 186, h: height - 615 }, // topping column area
     { x: width - 230, y: height - 103, w: 200, h: 56 }, // serve button
     null,
   ];
@@ -1145,23 +1145,23 @@ function _drawTutDone() {
 
   const tips = [
     {
-      icon: "->",
+      icon: "→",
       text: "The order bubble always shows the customer's TRUE colours",
     },
     {
-      icon: "->",
+      icon: "→",
       text: "Your ingredient bins are filtered through CVD - things will look different",
     },
     {
-      icon: "->",
+      icon: "→",
       text: "Use shape symbols (circle/diamond/triangle) to identify categories",
     },
     {
-      icon: "->",
+      icon: "→",
       text: "Use brightness and labels when colours are hard to tell apart",
     },
     {
-      icon: "->",
+      icon: "→",
       text: "Good luck!",
     },
   ];
@@ -1199,7 +1199,7 @@ function _drawTutDone() {
   fill(MOCHI.inkDark[0], MOCHI.inkDark[1], MOCHI.inkDark[2]);
   textAlign(CENTER, CENTER);
   textSize(15);
-  text("BEGIN SHIFT  ->", _TUT_NEXT.x, _TUT_NEXT.y);
+  text("NEXT →", _TUT_NEXT.x, _TUT_NEXT.y);
   cursor(h ? HAND : ARROW);
 }
 

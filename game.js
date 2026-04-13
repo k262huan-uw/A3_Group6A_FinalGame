@@ -241,7 +241,7 @@ function drawOrderBubble(x, y) {
   const slots = [
     { label: "Base", item: order.base, px: x + 18 },
     { label: "Syrup", item: order.syrup, px: x + 192 },
-    { label: "Topping", item: order.topping, px: x + 366 },
+    { label: "Topping", item: order.topping, px: x + 370 },
   ];
 
   for (let i = 0; i < slots.length; i++) {
